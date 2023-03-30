@@ -3,10 +3,11 @@ import { GlobalStyle } from './GlobalStyle';
 import { Layout } from './Layout';
 
 import { BookForm } from './BookForm/BookForm';
-import { ContactList } from './ContactList/ContactList';
 import Modal from './Modal/Modal';
 import { NewContactBtn } from './NewContButton/NewContButton';
 import { CloseModalBtn } from './CloseModalButton/CloseModalButton';
+import { Filter } from './Filter/Filter';
+import { ContactList } from './ContactList/ContactList';
 
 export const App = () => {
   const [showModal, setShowModal] = useState(false);
@@ -20,6 +21,8 @@ export const App = () => {
       <GlobalStyle />
       <h1>Phonebook</h1>
       <NewContactBtn showModal={toggleModal} />
+      <h2>Contacts</h2>
+      <Filter />
       <ContactList />
       {showModal && (
         <Modal onClose={toggleModal}>

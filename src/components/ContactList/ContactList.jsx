@@ -1,28 +1,42 @@
-import { Filter } from 'components/Filter/Filter';
-import React from 'react';
-import { ContactListItem } from './ContactListItem';
-import { useSelector } from 'react-redux';
-import { getContacts } from 'redux/selectors';
+import { BsFillPersonFill } from 'react-icons/bs';
+import { Item, List, DeleteButton } from './ContactList.style';
 
-// const getFilteredContacts = (contacts) => {
-//     return contacts.filter(contact =>
-//       contact.name.toLowerCase().includes(contact.toLowerCase())
-//     );
-//   };
+import { useDispatch } from 'react-redux';
+import { deleteContact } from 'redux/contactsSlice';
+import { useSelector } from 'react-redux';
+import { getContacts, getFilter } from 'redux/selectors';
+
+const getFilteredContacts = (contacts, filterValue) => {
+  return contacts.filter(contact =>
+    contact.name.toLowerCase().includes(filterValue.toLowerCase())
+  );
+};
 
 export const ContactList = () => {
-  //  const [filter, setFilter] = useState('');
   const contacts = useSelector(getContacts);
-
-  // const changeFilter = evt => {
-  //     setFilter(evt.currentTarget.value);
-  //   };
+  const filterValue = useSelector(getFilter);
+  const dispatch = useDispatch();
+  const visibleContacts = getFilteredContacts(contacts, filterValue);
 
   return (
-    <>
-      <h2>Contacts</h2>
-      <Filter />
-      <ContactListItem contacts={contacts} />
-    </>
+    <List>
+      {visibleContacts.map(contact => {
+        return (
+          <Item key={contact.id}>
+            <div>
+              <BsFillPersonFill />
+              <span>{contact.name}:</span>
+              <span>{contact.number}</span>
+            </div>
+            <DeleteButton
+              type="button"
+              onClick={() => dispatch(deleteContact(contact.id))}
+            >
+              Delete
+            </DeleteButton>
+          </Item>
+        );
+      })}
+    </List>
   );
 };
